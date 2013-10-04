@@ -1,0 +1,11 @@
+C:\Users\cagda_000\Documents\Visual Studio 2013\Projects\Muhasebe\Muhasebe\bin\Release\Muhasebe.exe.config
+C:\Users\cagda_000\Documents\Visual Studio 2013\Projects\Muhasebe\Muhasebe\bin\Release\Muhasebe.exe
+C:\Users\cagda_000\Documents\Visual Studio 2013\Projects\Muhasebe\Muhasebe\bin\Release\Muhasebe.pdb
+C:\Users\cagda_000\Documents\Visual Studio 2013\Projects\Muhasebe\Muhasebe\obj\Release\Muhasebe.Form1.resources
+C:\Users\cagda_000\Documents\Visual Studio 2013\Projects\Muhasebe\Muhasebe\obj\Release\Muhasebe.Properties.Resources.resources
+C:\Users\cagda_000\Documents\Visual Studio 2013\Projects\Muhasebe\Muhasebe\obj\Release\Muhasebe.csproj.GenerateResource.Cache
+C:\Users\cagda_000\Documents\Visual Studio 2013\Projects\Muhasebe\Muhasebe\obj\Release\Muhasebe.exe
+C:\Users\cagda_000\Documents\Visual Studio 2013\Projects\Muhasebe\Muhasebe\obj\Release\Muhasebe.pdb
+C:\Users\cagda_000\Documents\Visual Studio 2013\Projects\Muhasebe\Muhasebe\obj\Release\Muhasebe.csprojResolveAssemblyReference.cache
+C:\Users\cagda_000\Documents\Visual Studio 2013\Projects\Muhasebe\Muhasebe\obj\Release\Muhasebe.SifrePanel.resources
+C:\Users\cagda_000\Documents\Visual Studio 2013\Projects\Muhasebe\Muhasebe\obj\Release\Muhasebe.YeniKayit.resources
