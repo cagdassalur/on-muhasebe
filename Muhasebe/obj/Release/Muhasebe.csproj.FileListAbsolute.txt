@@ -18,3 +18,4 @@ C:\Users\cagda_000\Documents\Visual Studio 2013\Projects\Muhasebe\Muhasebe\obj\R
 C:\Users\cagda_000\Documents\Visual Studio 2013\Projects\Muhasebe\Muhasebe\obj\Release\Muhasebe.KartView.resources
 C:\Users\cagda_000\Documents\Visual Studio 2013\Projects\Muhasebe\Muhasebe\obj\Release\Muhasebe.FaturaGiris.resources
 C:\Users\cagda_000\Documents\Visual Studio 2013\Projects\Muhasebe\Muhasebe\obj\Release\Muhasebe.OdemeGiris.resources
+C:\Users\cagda_000\Documents\Visual Studio 2013\Projects\Muhasebe\Muhasebe\bin\Release\System.Web.Extensions.dll

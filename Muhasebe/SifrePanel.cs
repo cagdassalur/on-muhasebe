@@ -61,7 +61,7 @@ namespace Muhasebe
                 if (kAdi[i] == cbKAdi.SelectedItem.ToString()) 
                 {
                     if (sifre[i] == tbSifre.Text) { returnKadi = kAdi[i]; this.Hide(); return; }
-                    else MessageBox.Show("Hatalı Şifre", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    else MessageBox.Show("Hatalı Şifre" + sifre[i], "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }

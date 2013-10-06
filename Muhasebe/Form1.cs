@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using System.Web.Script.Serialization;
 
 // TODO: 
 // ***** User objesi için ayar ekranı koy
@@ -18,6 +18,7 @@ using System.Windows.Forms;
 // *** satış ekranında isim tb içinde çıkan listeyi tek tık yap
 // ** enter tuşunu formlara bağla http://stackoverflow.com/questions/14045825/change-accept-button-with-tabs
 // ** Kullanıcı sildir
+// ** kartview ekranına kaydet butonu
 // ** Cari Ekle type kontrolü
 // ** Cari Edit
 // * Cari sildir
@@ -78,68 +79,31 @@ namespace Muhasebe
         private List<string> getKadi()
         {
             List<string> kAdiTemp = new List<string>();
-            foreach (DirectoryInfo st in dir.GetDirectories())
+            foreach (FileInfo st in dir.GetFiles("*.json"))
             {
-                string sifre = "";
-                using (StreamReader sr = new StreamReader(st.FullName + "\\ayarlar.txt"))
-                {
-                    sifre = sr.ReadToEnd().Split('\n')[2];
-                }
-                kAdiTemp.Add(st.FullName.Split('\\').Last()+";"+sifre.Replace("\r",""));
+                string json = System.IO.File.ReadAllText(st.FullName);
+                SaveData savedata = new JavaScriptSerializer().Deserialize<SaveData>(json);
+                
+                kAdiTemp.Add(savedata.user.username+";"+savedata.user.password);
             }
             return kAdiTemp;
         }
 
         private User oku(string username)
         {
-            dir = new DirectoryInfo(dir.FullName + "\\" + username);
-           
-            foreach (string line in System.IO.File.ReadAllLines(dir.FullName + "\\urunler.txt"))
-            {
-                String[] data = line.Split(';');
-                if (data.Length < 3) continue;
-                dBArray.Add(new Urun(Convert.ToInt32(data[0]),data[1],Convert.ToInt32(data[2])));
-            }
-
-            foreach (string line in System.IO.File.ReadAllLines(dir.FullName + "\\giderler.txt"))
-            {
-                String[] data = line.Split(';');
-                if (data.Length < 4) continue;
-                GiderArray.Add(new Gider(data[0], Convert.ToInt32(data[1]), Convert.ToDouble(data[2]), Convert.ToInt32(data[3])));
-            }
-
-            String[] ayarlarArray = System.IO.File.ReadAllText(dir.FullName + "\\ayarlar.txt").Split('\n');
-            ayarlarArray[3] = ayarlarArray[3].Replace("\n", "").Replace("\r","");
-            List<String> giders = new List<string>();
-            foreach (string s in ayarlarArray[3].Split(';'))
-            {
-                if (s != "") giders.Add(s);
-            }
-            return new User(username, ayarlarArray[1], giders.ToArray(), this);
+            string json = System.IO.File.ReadAllText(dir.FullName + "\\" + username + ".json");
+            SaveData savedata = new JavaScriptSerializer().Deserialize<SaveData>(json);
+            dBArray = savedata.Uruns;
+            GiderArray = savedata.Giders;
+            KartArray = savedata.CKarts;
+            return savedata.user;
         }
 
         private void yaz()
         {
-            int count = dBArray.Count;
-            string[] lines = new string[count+1];
-            lines[0] = version;
-            for (int i=0; i<count; i++)
-            {
-                Urun urun = dBArray[i];
-                lines[i+1] = urun.id + ";" + urun.name + ";" + urun.amount.ToString();
-            }
-            System.IO.File.WriteAllLines(dir.FullName + "\\urunler.txt", lines);
-
-            int count2 = GiderArray.Count;
-            String[] lines2 = new string[count2+1];
-            lines2[0] = version;
-            for (int i = 0; i < count2; i++)
-            {
-                Gider gider = GiderArray[i];
-                lines2[i+1] = gider.tur + ";" + gider.miktar.ToString() + ";" + gider.fiyat.ToString() + ";" + gider.index.ToString();
-            }
-            System.IO.File.WriteAllLines(dir.FullName + "\\giderler.txt", lines2);
-
+            SaveData savedata = new SaveData(dBArray, GiderArray, KartArray, user);
+            var json = new JavaScriptSerializer().Serialize(savedata);
+            System.IO.File.WriteAllText(dir.FullName + "\\" + user.username + ".json" , json);
         }
 
         #region Database Tab
@@ -765,7 +729,7 @@ namespace Muhasebe
             public double borcToplam = 0;
             public double cariToplam = 0;
 
-
+            public CKart() { }
             public CKart(string _name, string _adres, string _telefon, string _mail,
                 string _no, string _no2, string _no3, double _bakiye)
             {
@@ -790,6 +754,7 @@ namespace Muhasebe
             public string irsaliyeNo;
             public double tutar;
 
+            public Fatura() { }
             public Fatura(string _tarih, string _no, string _irsaliyeNo,double _tutar)
             {
                 tarih = _tarih;
@@ -806,6 +771,7 @@ namespace Muhasebe
             public double tutar;
             public string aciklama;
 
+            public Odeme() { }
             public Odeme(string _tarih, string _odemeSekli,
                 double _tutar, string _aciklama)
             {
@@ -820,17 +786,19 @@ namespace Muhasebe
 
         public class User
         {
-            public string title;
-            public string username;
-            public string[] giderler;
+            public string title { get; set; }
+            public string username { get; set; }
+            public string password { get; set; }
+            public string[] giderler { get; set; }
             private Form1 v;
 
             public User() { }
-            public User(string _username, string _title, string[] _giderler, Form1 _v)
+            public User(string _username, string _title, string[] _giderler, string _pass, Form1 _v)
             {
                 this.username = _username;
                 this.giderler = _giderler;
-                this.title = _title.Replace("\n","").Replace("\r","").Trim();
+                this.title = _title;
+                this.password = _pass;
                 this.v = _v;
                 v.stlabelIsım.Text = title;
                 v.labelSirket.Text = title;
@@ -839,6 +807,30 @@ namespace Muhasebe
                 foreach (string gider in giderler) v.cbGider.Items.Add(gider);
                 v.cbGider.Items.Add("Diğer");
                 v.cbGider.SelectedIndex = 0;
+            }
+            public User(string _username, string _title, string[] _giderler, string _pass)
+            {
+                this.username = _username;
+                this.giderler = _giderler;
+                this.title = _title;
+                this.password = _pass;
+            }
+        }
+
+        public class SaveData 
+        {
+            public List<Urun> Uruns { get; set; }
+            public List<Gider> Giders { get; set; }
+            public List<CKart> CKarts { get; set; }
+            public User user { get; set; }
+
+            public SaveData() { }
+            public SaveData(List<Urun> _Uruns, List<Gider> _Giders, List<CKart> _CKarts, User _user) 
+            {
+                Uruns = _Uruns;
+                Giders = _Giders;
+                CKarts = _CKarts;
+                user = _user;
             }
         }
 

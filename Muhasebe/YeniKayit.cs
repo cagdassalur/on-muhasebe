@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Web.Script.Serialization;
 
 namespace Muhasebe
 {
@@ -28,27 +29,22 @@ namespace Muhasebe
 
         private void btKaydet_Click(object sender, EventArgs e)
         {
-            dir.CreateSubdirectory(tbUserName.Text);
-            dir = new DirectoryInfo(dir.FullName + "\\" + tbUserName.Text);
-
-            System.IO.File.WriteAllText(dir.FullName + "\\urunler.txt", version);
-
-            System.IO.File.WriteAllText(dir.FullName + "\\giderler.txt", version);
-
-            string[] st = new string[4];
-            st[0] = version;
-            st[1] = tbFirma.Text;
-            st[2] = tbPass.Text;
-            st[3] = "";
+            List<string> st = new List<string>();
             foreach (string gider in tbGider.Text.Split('\n'))
             {
-                if(gider != "") st[3] += gider + ";";
+                if (gider != "") st.Add(gider);
             }
-            st[3] = st[3].TrimEnd(';');
+            
+            Form1.User newUser = new Form1.User(tbUserName.Text, tbFirma.Text, st.ToArray(), tbPass.Text);
+            Form1.SaveData savedata = new Form1.SaveData(new List<Form1.Urun>(), new List<Form1.Gider>(), 
+                                            new List<Form1.CKart>(), newUser);
 
-            System.IO.File.WriteAllLines(dir.FullName + "\\ayarlar.txt", st);
+            var json = new JavaScriptSerializer().Serialize(savedata);
+            System.IO.File.WriteAllText(dir.FullName + "\\" + tbUserName.Text + ".json", json);
+
             output[0] = tbUserName.Text;
             output[1] = tbPass.Text;
+            
             this.Hide();
         }
 
