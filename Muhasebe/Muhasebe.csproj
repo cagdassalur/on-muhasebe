@@ -12,6 +12,7 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -22,10 +23,10 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationVersion>0.2.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -50,6 +51,24 @@
   <PropertyGroup>
     <ApplicationIcon>1380069365_128632.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>92D13290E488FEEE8C3DEDA7A71841D4D442E44C</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>Muhasebe_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -63,11 +82,35 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CariEkle.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CariEkle.Designer.cs">
+      <DependentUpon>CariEkle.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OdemeGiris.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OdemeGiris.Designer.cs">
+      <DependentUpon>OdemeGiris.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FaturaGiris.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FaturaGiris.Designer.cs">
+      <DependentUpon>FaturaGiris.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="KartView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="KartView.Designer.cs">
+      <DependentUpon>KartView.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -83,8 +126,20 @@
     <Compile Include="YeniKayit.Designer.cs">
       <DependentUpon>YeniKayit.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="CariEkle.resx">
+      <DependentUpon>CariEkle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OdemeGiris.resx">
+      <DependentUpon>OdemeGiris.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FaturaGiris.resx">
+      <DependentUpon>FaturaGiris.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="KartView.resx">
+      <DependentUpon>KartView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -103,6 +158,8 @@
       <DependentUpon>YeniKayit.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="ClassDiagram1.cd" />
+    <None Include="Muhasebe_TemporaryKey.pfx" />
+    <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

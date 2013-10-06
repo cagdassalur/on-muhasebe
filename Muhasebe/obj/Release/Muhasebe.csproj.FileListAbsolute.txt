@@ -9,3 +9,12 @@ C:\Users\cagda_000\Documents\Visual Studio 2013\Projects\Muhasebe\Muhasebe\obj\R
 C:\Users\cagda_000\Documents\Visual Studio 2013\Projects\Muhasebe\Muhasebe\obj\Release\Muhasebe.csprojResolveAssemblyReference.cache
 C:\Users\cagda_000\Documents\Visual Studio 2013\Projects\Muhasebe\Muhasebe\obj\Release\Muhasebe.SifrePanel.resources
 C:\Users\cagda_000\Documents\Visual Studio 2013\Projects\Muhasebe\Muhasebe\obj\Release\Muhasebe.YeniKayit.resources
+C:\Users\cagda_000\Documents\Visual Studio 2013\Projects\Muhasebe\Muhasebe\obj\Release\Muhasebe.CariEkle.resources
+C:\Users\cagda_000\Documents\Visual Studio 2013\Projects\Muhasebe\Muhasebe\bin\Release\Muhasebe.exe.manifest
+C:\Users\cagda_000\Documents\Visual Studio 2013\Projects\Muhasebe\Muhasebe\bin\Release\Muhasebe.application
+C:\Users\cagda_000\Documents\Visual Studio 2013\Projects\Muhasebe\Muhasebe\obj\Release\Muhasebe.TrustInfo.xml
+C:\Users\cagda_000\Documents\Visual Studio 2013\Projects\Muhasebe\Muhasebe\obj\Release\Muhasebe.exe.manifest
+C:\Users\cagda_000\Documents\Visual Studio 2013\Projects\Muhasebe\Muhasebe\obj\Release\Muhasebe.application
+C:\Users\cagda_000\Documents\Visual Studio 2013\Projects\Muhasebe\Muhasebe\obj\Release\Muhasebe.KartView.resources
+C:\Users\cagda_000\Documents\Visual Studio 2013\Projects\Muhasebe\Muhasebe\obj\Release\Muhasebe.FaturaGiris.resources
+C:\Users\cagda_000\Documents\Visual Studio 2013\Projects\Muhasebe\Muhasebe\obj\Release\Muhasebe.OdemeGiris.resources

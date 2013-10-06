@@ -13,16 +13,22 @@ using System.Windows.Forms;
 
 
 // TODO: 
-// ######### Bütün formlara type kontrolü koy
-// *** enter tuşunu formlara bağla
-// XXXXXX Gider objesinden index değerini kaldır
-// ** gider listesine tarih filtresi ve sütunu ekle
+// ***** User objesi için ayar ekranı koy
+// ***** gider listesine tarih filtresi ve sütunu ekle
 // *** satış ekranında isim tb içinde çıkan listeyi tek tık yap
-// ######### k.adı şifre paneli koy
-// ######### profil desteği ekle
-// XXXXXX User ayarlar.txt dosyasına diger gider tipini ekle
-// *************** yeni kullanıcı yaratınca username exists uyarısı
-// ***** Kullanıcı sildir
+// ** enter tuşunu formlara bağla http://stackoverflow.com/questions/14045825/change-accept-button-with-tabs
+// ** Kullanıcı sildir
+// ** Cari Ekle type kontrolü
+// ** Cari Edit
+// * Cari sildir
+// * yeni kart ekranına giderler açıklaması koy http://stackoverflow.com/questions/14544135/how-to-gray-out-default-text-in-textbox
+// * eksik form ikonlarını tamamla
+
+
+// ** Urun objesine birim ekle 
+// *** Ekran kaplanacak
+// 
+
 
 
 
@@ -32,7 +38,7 @@ namespace Muhasebe
     {
 
         double totalPara = 5000;
-        string version = "v0.04";
+        string version = System.Reflection.Assembly.GetEntryAssembly().GetName().Version.ToString();
         List<Urun> dBArray = new List<Urun>();
         List<Gider> GiderArray = new List<Gider>();
         List<CKart> KartArray = new List<CKart>();
@@ -56,10 +62,11 @@ namespace Muhasebe
             lvDbUpdate();
             lvGiderUpdate();
             lvSatisUpdate();
+            KartArray.Add(new CKart("TEST","","","","","","", 0));
+            lvKartlarUpdate();
             updateLabelToplamFiyat();
             GiderKaydir(false);
         }
-
 
         private string login(String[] KAdiList)
         {
@@ -664,10 +671,78 @@ namespace Muhasebe
 
         #region Cariye
 
-        private void btCariEkle_Click(object sender, EventArgs e)
+        private void lvKartlarAddColumns() 
+        {
+            lvKartlar.Clear();
+            foreach (var header in new Dictionary<string, int> {
+                {"Firma Adı",133},
+                {"Faturalar Toplamı",103},
+                {"Yapılan Ödemeler",107},
+                {"Kalan Borç Miktarı", 111}})
+            {
+                ColumnHeader tmp_header = new ColumnHeader();
+                tmp_header.Text = header.Key;
+                tmp_header.Width = header.Value;
+                lvKartlar.Columns.Add(tmp_header);
+            }
+        }
+
+        private void lvKartlarUpdate()
+        {
+            lvKartlar.SelectedIndices.Clear();
+            lvKartlarAddColumns();
+            foreach (CKart kart in KartArray)
+            {
+                String[] row = { kart.name, kart.faturaToplam.ToString(),
+                                   kart.odemeToplam.ToString(),
+                                   kart.cariToplam.ToString() };
+                var item = new ListViewItem(row);
+                lvKartlar.Items.Add(item);
+            }
+        }
+
+        private void lvKartlar_DoubleClick(object sender, EventArgs e)
+        {
+            KartView kartView = new KartView(KartArray[lvKartlar.SelectedIndices[0]]);
+            kartView.ShowDialog();
+            if (kartView.okay)
+            {
+                KartArray[lvKartlar.SelectedIndices[0]] = kartView.kart;
+                lvKartlarUpdate();
+            }
+        }
+
+        private void cmsEkle_Click(object sender, EventArgs e)
         {
             CariEkle cariEkle = new CariEkle();
             cariEkle.ShowDialog();
+            if (cariEkle.created)
+            {
+                KartArray.Add(cariEkle.output);
+                lvKartlarUpdate();
+            }
+        }
+
+        private void tsmiDuzenle_Click(object sender, EventArgs e)
+        {
+            CariEkle cariEkle = new CariEkle(KartArray[lvKartlar.SelectedIndices[0]]);
+            cariEkle.ShowDialog();
+            if (cariEkle.created)
+            {
+                KartArray[lvKartlar.SelectedIndices[0]] = cariEkle.output;
+                lvKartlarUpdate();
+            }
+            else if (cariEkle.sil)
+            {
+                KartArray.RemoveAt(lvKartlar.SelectedIndices[0]);
+                lvKartlarUpdate();
+            }
+        }
+
+        private void cmsKart_Opened(object sender, EventArgs e)
+        {
+            if (lvKartlar.SelectedIndices.Count < 1) tsmiDuzenle.Enabled = false;
+            else tsmiDuzenle.Enabled = true;
         }
 
         public class CKart
@@ -680,8 +755,19 @@ namespace Muhasebe
             public string no2;
             public string no3;
 
+            public List<Odeme> odemeList;
+            public List<Fatura> faturaList;
+
+            public double faturaToplam;
+            public double bakiyeToplam;
+            public double odemeToplam;
+
+            public double borcToplam = 0;
+            public double cariToplam = 0;
+
+
             public CKart(string _name, string _adres, string _telefon, string _mail,
-                string _no, string _no2, string _no3)
+                string _no, string _no2, string _no3, double _bakiye)
             {
                 name = _name;
                 adres = _adres;
@@ -690,6 +776,43 @@ namespace Muhasebe
                 no = _no;
                 no2 = _no2;
                 no3 = _no3;
+                bakiyeToplam = _bakiye;
+
+                odemeList = new List<Odeme>();
+                faturaList = new List<Fatura>();
+            }
+        }
+
+        public class Fatura
+        {
+            public string tarih; /// TYPE DATETIME OLACAK
+            public string no;
+            public string irsaliyeNo;
+            public double tutar;
+
+            public Fatura(string _tarih, string _no, string _irsaliyeNo,double _tutar)
+            {
+                tarih = _tarih;
+                no = _no;
+                irsaliyeNo = _irsaliyeNo;
+                tutar = _tutar;
+            }
+        }
+
+        public class Odeme 
+        {
+            public string tarih; /// TYPE DATETIME OLACAK
+            public string odemeSekli;
+            public double tutar;
+            public string aciklama;
+
+            public Odeme(string _tarih, string _odemeSekli,
+                double _tutar, string _aciklama)
+            {
+                tarih = _tarih;
+                odemeSekli = _odemeSekli;
+                tutar = _tutar;
+                aciklama = _aciklama;
             }
         }
 

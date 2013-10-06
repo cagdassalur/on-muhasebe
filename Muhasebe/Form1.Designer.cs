@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabSatis = new System.Windows.Forms.TabPage();
@@ -70,7 +71,7 @@
             this.labelGiderTip = new System.Windows.Forms.Label();
             this.cbGider = new System.Windows.Forms.ComboBox();
             this.tabHesap = new System.Windows.Forms.TabPage();
-            this.listView1 = new System.Windows.Forms.ListView();
+            this.lvKartlar = new System.Windows.Forms.ListView();
             this.chN = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -91,7 +92,9 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.stlabelIsım = new System.Windows.Forms.ToolStripStatusLabel();
-            this.btCariEkle = new System.Windows.Forms.Button();
+            this.cmsKart = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.cmsEkle = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiDuzenle = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl.SuspendLayout();
             this.tabSatis.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudSatisAdet)).BeginInit();
@@ -101,6 +104,7 @@
             this.tabDb.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudStok)).BeginInit();
             this.statusStrip.SuspendLayout();
+            this.cmsKart.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl
@@ -541,8 +545,7 @@
             // 
             // tabHesap
             // 
-            this.tabHesap.Controls.Add(this.btCariEkle);
-            this.tabHesap.Controls.Add(this.listView1);
+            this.tabHesap.Controls.Add(this.lvKartlar);
             this.tabHesap.Location = new System.Drawing.Point(4, 22);
             this.tabHesap.Name = "tabHesap";
             this.tabHesap.Padding = new System.Windows.Forms.Padding(3);
@@ -551,19 +554,23 @@
             this.tabHesap.Text = "Hesap";
             this.tabHesap.UseVisualStyleBackColor = true;
             // 
-            // listView1
+            // lvKartlar
             // 
-            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.lvKartlar.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.chN,
             this.columnHeader6,
             this.columnHeader7,
             this.columnHeader8});
-            this.listView1.Location = new System.Drawing.Point(3, 6);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(459, 232);
-            this.listView1.TabIndex = 0;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.View = System.Windows.Forms.View.Details;
+            this.lvKartlar.ContextMenuStrip = this.cmsKart;
+            this.lvKartlar.FullRowSelect = true;
+            this.lvKartlar.Location = new System.Drawing.Point(3, 6);
+            this.lvKartlar.MultiSelect = false;
+            this.lvKartlar.Name = "lvKartlar";
+            this.lvKartlar.Size = new System.Drawing.Size(459, 232);
+            this.lvKartlar.TabIndex = 0;
+            this.lvKartlar.UseCompatibleStateImageBehavior = false;
+            this.lvKartlar.View = System.Windows.Forms.View.Details;
+            this.lvKartlar.DoubleClick += new System.EventHandler(this.lvKartlar_DoubleClick);
             // 
             // chN
             // 
@@ -601,7 +608,7 @@
             this.tabDb.Padding = new System.Windows.Forms.Padding(3);
             this.tabDb.Size = new System.Drawing.Size(465, 380);
             this.tabDb.TabIndex = 3;
-            this.tabDb.Text = "Veritabanı";
+            this.tabDb.Text = "Stok Girişi";
             this.tabDb.UseVisualStyleBackColor = true;
             // 
             // button1
@@ -748,15 +755,29 @@
             this.stlabelIsım.Size = new System.Drawing.Size(88, 17);
             this.stlabelIsım.Text = "Gültekin Plastik";
             // 
-            // btCariEkle
+            // cmsKart
             // 
-            this.btCariEkle.Location = new System.Drawing.Point(8, 244);
-            this.btCariEkle.Name = "btCariEkle";
-            this.btCariEkle.Size = new System.Drawing.Size(79, 23);
-            this.btCariEkle.TabIndex = 1;
-            this.btCariEkle.Text = "Cari Kart Ekle";
-            this.btCariEkle.UseVisualStyleBackColor = true;
-            this.btCariEkle.Click += new System.EventHandler(this.btCariEkle_Click);
+            this.cmsKart.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cmsEkle,
+            this.tsmiDuzenle});
+            this.cmsKart.Name = "cmsFatura";
+            this.cmsKart.Size = new System.Drawing.Size(153, 70);
+            this.cmsKart.Opened += new System.EventHandler(this.cmsKart_Opened);
+            // 
+            // cmsEkle
+            // 
+            this.cmsEkle.Name = "cmsEkle";
+            this.cmsEkle.Size = new System.Drawing.Size(152, 22);
+            this.cmsEkle.Text = "Ekle";
+            this.cmsEkle.Click += new System.EventHandler(this.cmsEkle_Click);
+            // 
+            // tsmiDuzenle
+            // 
+            this.tsmiDuzenle.Enabled = false;
+            this.tsmiDuzenle.Name = "tsmiDuzenle";
+            this.tsmiDuzenle.Size = new System.Drawing.Size(152, 22);
+            this.tsmiDuzenle.Text = "Düzenle";
+            this.tsmiDuzenle.Click += new System.EventHandler(this.tsmiDuzenle_Click);
             // 
             // Form1
             // 
@@ -781,6 +802,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudStok)).EndInit();
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
+            this.cmsKart.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -845,12 +867,14 @@
         private System.Windows.Forms.Label labelToplamFiyat;
         private System.Windows.Forms.Button btSat;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.ListView lvKartlar;
         private System.Windows.Forms.ColumnHeader chN;
         private System.Windows.Forms.ColumnHeader columnHeader6;
         private System.Windows.Forms.ColumnHeader columnHeader7;
         private System.Windows.Forms.ColumnHeader columnHeader8;
-        private System.Windows.Forms.Button btCariEkle;
+        private System.Windows.Forms.ContextMenuStrip cmsKart;
+        private System.Windows.Forms.ToolStripMenuItem cmsEkle;
+        private System.Windows.Forms.ToolStripMenuItem tsmiDuzenle;
     }
 }
 

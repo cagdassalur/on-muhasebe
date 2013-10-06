@@ -12,7 +12,7 @@ namespace Muhasebe
 {
     public partial class YeniKayit : Form
     {
-        string version = "0.04";
+        string version = System.Reflection.Assembly.GetEntryAssembly().GetName().Version.ToString();
         public string[] output = {"",""};
         DirectoryInfo dir;
         public YeniKayit(DirectoryInfo _dir)
