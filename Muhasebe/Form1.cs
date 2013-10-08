@@ -749,13 +749,13 @@ namespace Muhasebe
 
         public class Fatura
         {
-            public string tarih; /// TYPE DATETIME OLACAK
+            public DateTime tarih; /// TYPE DATETIME OLACAK
             public string no;
             public string irsaliyeNo;
             public double tutar;
 
             public Fatura() { }
-            public Fatura(string _tarih, string _no, string _irsaliyeNo,double _tutar)
+            public Fatura(DateTime _tarih, string _no, string _irsaliyeNo,double _tutar)
             {
                 tarih = _tarih;
                 no = _no;
@@ -766,13 +766,13 @@ namespace Muhasebe
 
         public class Odeme 
         {
-            public string tarih; /// TYPE DATETIME OLACAK
+            public DateTime tarih; /// TYPE DATETIME OLACAK
             public string odemeSekli;
             public double tutar;
             public string aciklama;
 
             public Odeme() { }
-            public Odeme(string _tarih, string _odemeSekli,
+            public Odeme(DateTime _tarih, string _odemeSekli,
                 double _tutar, string _aciklama)
             {
                 tarih = _tarih;
@@ -781,6 +781,10 @@ namespace Muhasebe
                 aciklama = _aciklama;
             }
         }
+
+        #endregion
+
+        #region Rapor Tab
 
         #endregion
 

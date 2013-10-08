@@ -25,7 +25,7 @@ namespace Muhasebe
             InitializeComponent();
             odeme = _odeme;
             btSil.Enabled = true;
-            tbTarih.Text = odeme.tarih;
+            dtpTarih.Value = odeme.tarih;
             tbSekil.Text = odeme.odemeSekli;
             tbAciklama.Text = odeme.aciklama;
             tbTutar.Text = odeme.tutar.ToString();
@@ -36,7 +36,7 @@ namespace Muhasebe
             if (Check())
             {
                 okay = true;
-                odeme = new Form1.Odeme(tbTarih.Text, tbSekil.Text, double.Parse(tbTutar.Text), tbAciklama.Text);
+                odeme = new Form1.Odeme(dtpTarih.Value, tbSekil.Text, double.Parse(tbTutar.Text), tbAciklama.Text);
                 this.Hide();
             }
             else MessageBox.Show("Lütfen yıldızlı alanları eksiksiz doldurun.", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -45,7 +45,7 @@ namespace Muhasebe
         private bool Check()
         {
             long number1 = 0;
-            if (long.TryParse(tbTutar.Text, out number1) && tbTarih.Text != "") return true;
+            if (long.TryParse(tbTutar.Text, out number1)) return true;
             else return false;
         }
 

@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
-            this.tbTarih = new System.Windows.Forms.TextBox();
             this.tbNo = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.tbIrNo = new System.Windows.Forms.TextBox();
@@ -39,6 +38,7 @@
             this.btEkle = new System.Windows.Forms.Button();
             this.btIptal = new System.Windows.Forms.Button();
             this.btSil = new System.Windows.Forms.Button();
+            this.dtpTarih = new System.Windows.Forms.DateTimePicker();
             this.SuspendLayout();
             // 
             // label1
@@ -49,13 +49,6 @@
             this.label1.Size = new System.Drawing.Size(75, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "Fatura Tarihi  :";
-            // 
-            // tbTarih
-            // 
-            this.tbTarih.Location = new System.Drawing.Point(85, 12);
-            this.tbTarih.Name = "tbTarih";
-            this.tbTarih.Size = new System.Drawing.Size(187, 20);
-            this.tbTarih.TabIndex = 1;
             // 
             // tbNo
             // 
@@ -136,11 +129,19 @@
             this.btSil.UseVisualStyleBackColor = true;
             this.btSil.Click += new System.EventHandler(this.btSil_Click);
             // 
+            // dtpTarih
+            // 
+            this.dtpTarih.Location = new System.Drawing.Point(85, 15);
+            this.dtpTarih.Name = "dtpTarih";
+            this.dtpTarih.Size = new System.Drawing.Size(187, 20);
+            this.dtpTarih.TabIndex = 12;
+            // 
             // FaturaGiris
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 171);
+            this.Controls.Add(this.dtpTarih);
             this.Controls.Add(this.btSil);
             this.Controls.Add(this.btIptal);
             this.Controls.Add(this.btEkle);
@@ -150,7 +151,6 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.tbNo);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.tbTarih);
             this.Controls.Add(this.label1);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -164,7 +164,6 @@
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox tbTarih;
         private System.Windows.Forms.TextBox tbNo;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox tbIrNo;
@@ -174,5 +173,6 @@
         private System.Windows.Forms.Button btEkle;
         private System.Windows.Forms.Button btIptal;
         private System.Windows.Forms.Button btSil;
+        private System.Windows.Forms.DateTimePicker dtpTarih;
     }
 }

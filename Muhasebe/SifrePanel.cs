@@ -33,7 +33,7 @@ namespace Muhasebe
 
             if (kAdi.Count < 1) cbKAdi.Text = "( Kullanıcı Yok )";
             else foreach (string kAdi1 in kAdi) cbKAdi.Items.Add(kAdi1);
-            cbKAdi.SelectedIndex = 0;
+            if(cbKAdi.Items.Count > 0) cbKAdi.SelectedIndex = 0;
 
             tbSifre.Text = "1234"; // TEST!
         }
@@ -73,6 +73,7 @@ namespace Muhasebe
             kAdi.Add(yeniKayit.output[0]);
             cbKAdi.Items.Add(yeniKayit.output[0]);
             sifre.Add(yeniKayit.output[1]);
+            cbKAdi.SelectedIndex = 0;
         }
 
         private void SifrePanel_Load(object sender, EventArgs e)

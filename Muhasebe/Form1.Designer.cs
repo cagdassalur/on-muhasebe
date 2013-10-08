@@ -76,6 +76,9 @@
             this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.cmsKart = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.cmsEkle = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiDuzenle = new System.Windows.Forms.ToolStripMenuItem();
             this.tabDb = new System.Windows.Forms.TabPage();
             this.button1 = new System.Windows.Forms.Button();
             this.btKaydet = new System.Windows.Forms.Button();
@@ -92,19 +95,17 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.stlabelIsım = new System.Windows.Forms.ToolStripStatusLabel();
-            this.cmsKart = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.cmsEkle = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiDuzenle = new System.Windows.Forms.ToolStripMenuItem();
+            this.tabRapor = new System.Windows.Forms.TabPage();
             this.tabControl.SuspendLayout();
             this.tabSatis.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudSatisAdet)).BeginInit();
             this.tabGider.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudGiderMiktar)).BeginInit();
             this.tabHesap.SuspendLayout();
+            this.cmsKart.SuspendLayout();
             this.tabDb.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudStok)).BeginInit();
             this.statusStrip.SuspendLayout();
-            this.cmsKart.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl
@@ -113,6 +114,7 @@
             this.tabControl.Controls.Add(this.tabGider);
             this.tabControl.Controls.Add(this.tabHesap);
             this.tabControl.Controls.Add(this.tabDb);
+            this.tabControl.Controls.Add(this.tabRapor);
             this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl.Location = new System.Drawing.Point(0, 0);
             this.tabControl.Name = "tabControl";
@@ -202,7 +204,7 @@
             // 
             // comboBox1
             // 
-            this.comboBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.comboBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
             "TL",
@@ -216,6 +218,7 @@
             // 
             // tbSatisFiyat
             // 
+            this.tbSatisFiyat.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.tbSatisFiyat.Location = new System.Drawing.Point(333, 59);
             this.tbSatisFiyat.Name = "tbSatisFiyat";
             this.tbSatisFiyat.Size = new System.Drawing.Size(72, 20);
@@ -592,6 +595,30 @@
             this.columnHeader8.Text = "Kalan Borç miktarı";
             this.columnHeader8.Width = 111;
             // 
+            // cmsKart
+            // 
+            this.cmsKart.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cmsEkle,
+            this.tsmiDuzenle});
+            this.cmsKart.Name = "cmsFatura";
+            this.cmsKart.Size = new System.Drawing.Size(117, 48);
+            this.cmsKart.Opened += new System.EventHandler(this.cmsKart_Opened);
+            // 
+            // cmsEkle
+            // 
+            this.cmsEkle.Name = "cmsEkle";
+            this.cmsEkle.Size = new System.Drawing.Size(116, 22);
+            this.cmsEkle.Text = "Ekle";
+            this.cmsEkle.Click += new System.EventHandler(this.cmsEkle_Click);
+            // 
+            // tsmiDuzenle
+            // 
+            this.tsmiDuzenle.Enabled = false;
+            this.tsmiDuzenle.Name = "tsmiDuzenle";
+            this.tsmiDuzenle.Size = new System.Drawing.Size(116, 22);
+            this.tsmiDuzenle.Text = "Düzenle";
+            this.tsmiDuzenle.Click += new System.EventHandler(this.tsmiDuzenle_Click);
+            // 
             // tabDb
             // 
             this.tabDb.Controls.Add(this.button1);
@@ -755,29 +782,15 @@
             this.stlabelIsım.Size = new System.Drawing.Size(88, 17);
             this.stlabelIsım.Text = "Gültekin Plastik";
             // 
-            // cmsKart
+            // tabRapor
             // 
-            this.cmsKart.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.cmsEkle,
-            this.tsmiDuzenle});
-            this.cmsKart.Name = "cmsFatura";
-            this.cmsKart.Size = new System.Drawing.Size(153, 70);
-            this.cmsKart.Opened += new System.EventHandler(this.cmsKart_Opened);
-            // 
-            // cmsEkle
-            // 
-            this.cmsEkle.Name = "cmsEkle";
-            this.cmsEkle.Size = new System.Drawing.Size(152, 22);
-            this.cmsEkle.Text = "Ekle";
-            this.cmsEkle.Click += new System.EventHandler(this.cmsEkle_Click);
-            // 
-            // tsmiDuzenle
-            // 
-            this.tsmiDuzenle.Enabled = false;
-            this.tsmiDuzenle.Name = "tsmiDuzenle";
-            this.tsmiDuzenle.Size = new System.Drawing.Size(152, 22);
-            this.tsmiDuzenle.Text = "Düzenle";
-            this.tsmiDuzenle.Click += new System.EventHandler(this.tsmiDuzenle_Click);
+            this.tabRapor.Location = new System.Drawing.Point(4, 22);
+            this.tabRapor.Name = "tabRapor";
+            this.tabRapor.Padding = new System.Windows.Forms.Padding(3);
+            this.tabRapor.Size = new System.Drawing.Size(465, 380);
+            this.tabRapor.TabIndex = 4;
+            this.tabRapor.Text = "Rapor";
+            this.tabRapor.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -797,12 +810,12 @@
             this.tabGider.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudGiderMiktar)).EndInit();
             this.tabHesap.ResumeLayout(false);
+            this.cmsKart.ResumeLayout(false);
             this.tabDb.ResumeLayout(false);
             this.tabDb.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudStok)).EndInit();
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
-            this.cmsKart.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -875,6 +888,7 @@
         private System.Windows.Forms.ContextMenuStrip cmsKart;
         private System.Windows.Forms.ToolStripMenuItem cmsEkle;
         private System.Windows.Forms.ToolStripMenuItem tsmiDuzenle;
+        private System.Windows.Forms.TabPage tabRapor;
     }
 }
 
