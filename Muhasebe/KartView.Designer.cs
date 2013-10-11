@@ -39,11 +39,13 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.lvFatura = new System.Windows.Forms.ListView();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chN = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.cmsFatura = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.cmsmiFatEkle = new System.Windows.Forms.ToolStripMenuItem();
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.lvOdeme = new System.Windows.Forms.ListView();
@@ -51,8 +53,6 @@
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.cmsFatura = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.cmsmiFatEkle = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsOdeme = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiEkle = new System.Windows.Forms.ToolStripMenuItem();
             this.labelToplam = new System.Windows.Forms.Label();
@@ -160,6 +160,11 @@
             this.lvFatura.View = System.Windows.Forms.View.Details;
             this.lvFatura.DoubleClick += new System.EventHandler(this.lvFatura_DoubleClick);
             // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "No";
+            this.columnHeader1.Width = 30;
+            // 
             // chN
             // 
             this.chN.Text = "Fatura Tarihi";
@@ -179,10 +184,19 @@
             // 
             this.columnHeader8.Text = "Tutar";
             // 
-            // columnHeader1
+            // cmsFatura
             // 
-            this.columnHeader1.Text = "No";
-            this.columnHeader1.Width = 30;
+            this.cmsFatura.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cmsmiFatEkle});
+            this.cmsFatura.Name = "cmsFatura";
+            this.cmsFatura.Size = new System.Drawing.Size(96, 26);
+            // 
+            // cmsmiFatEkle
+            // 
+            this.cmsmiFatEkle.Name = "cmsmiFatEkle";
+            this.cmsmiFatEkle.Size = new System.Drawing.Size(95, 22);
+            this.cmsmiFatEkle.Text = "Ekle";
+            this.cmsmiFatEkle.Click += new System.EventHandler(this.cmsmiFatEkle_Click);
             // 
             // label8
             // 
@@ -241,20 +255,6 @@
             // 
             this.columnHeader5.Text = "Tutar";
             this.columnHeader5.Width = 70;
-            // 
-            // cmsFatura
-            // 
-            this.cmsFatura.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.cmsmiFatEkle});
-            this.cmsFatura.Name = "cmsFatura";
-            this.cmsFatura.Size = new System.Drawing.Size(96, 26);
-            // 
-            // cmsmiFatEkle
-            // 
-            this.cmsmiFatEkle.Name = "cmsmiFatEkle";
-            this.cmsmiFatEkle.Size = new System.Drawing.Size(95, 22);
-            this.cmsmiFatEkle.Text = "Ekle";
-            this.cmsmiFatEkle.Click += new System.EventHandler(this.cmsmiFatEkle_Click);
             // 
             // cmsOdeme
             // 

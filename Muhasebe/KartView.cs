@@ -18,7 +18,8 @@ namespace Muhasebe
             InitializeComponent();
             kart = _kart;
             labelSirket.Text = kart.name;
-            kartInfoUpdate();
+            lvFaturaUpdate();
+            lvOdemeUpdate();
         }
 
         #region Odeme
@@ -45,7 +46,7 @@ namespace Muhasebe
             int i = 0;
             foreach (Form1.Odeme odeme in kart.odemeList)
             {
-                String[] row = { i.ToString(), odeme.tarih, odeme.odemeSekli,
+                String[] row = { i.ToString(), odeme.tarih.ToShortDateString(), odeme.odemeSekli,
                                    "₤" + odeme.tutar.ToString("N2") };
                 var item = new ListViewItem(row);
                 lvOdeme.Items.Add(item);
@@ -62,6 +63,7 @@ namespace Muhasebe
             {
                 kart.odemeList.Add(odemeGiris.odeme);
                 lvOdemeUpdate();
+                okay = true;
             }
         }
 
@@ -107,7 +109,7 @@ namespace Muhasebe
             int i = 0;
             foreach (Form1.Fatura fatura in kart.faturaList)
             {
-                String[] row = { i.ToString(), fatura.tarih, fatura.no,
+                String[] row = { i.ToString(), fatura.tarih.ToShortDateString(), fatura.no,
                                    fatura.irsaliyeNo, "₤" + fatura.tutar.ToString("N2") };
                 var item = new ListViewItem(row);
                 lvFatura.Items.Add(item);
@@ -124,6 +126,7 @@ namespace Muhasebe
             {
                 kart.faturaList.Add(faturaGiris.fatura);
                 lvFaturaUpdate();
+                okay = true;
             }
         }
 

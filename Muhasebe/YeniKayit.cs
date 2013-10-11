@@ -37,7 +37,7 @@ namespace Muhasebe
             
             Form1.User newUser = new Form1.User(tbUserName.Text, tbFirma.Text, st.ToArray(), tbPass.Text);
             Form1.SaveData savedata = new Form1.SaveData(new List<Form1.Urun>(), new List<Form1.Gider>(), 
-                                            new List<Form1.CKart>(), newUser);
+                                            new List<Form1.CKart>(),new List<Form1.Satis>(), newUser);
 
             var json = new JavaScriptSerializer().Serialize(savedata);
             System.IO.File.WriteAllText(dir.FullName + "\\" + tbUserName.Text + ".json", json);

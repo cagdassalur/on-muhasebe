@@ -4,7 +4,7 @@
   <description asmv2:iconFile="1380069365_128632.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="Muhasebe" version="0.2.0.0" language="neutral" processorArchitecture="msil" />
+    <assemblyIdentity name="Muhasebe" version="0.9.2.0" language="neutral" processorArchitecture="msil" />
     <commandLine file="Muhasebe.exe" parameters="" />
   </entryPoint>
   <trustInfo>
@@ -43,14 +43,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Muhasebe.exe" size="660480">
-      <assemblyIdentity name="Muhasebe" version="0.2.0.0" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Muhasebe.exe" size="904192">
+      <assemblyIdentity name="Muhasebe" version="0.9.2.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>r/jhZOi8idv2GnO/Fm0hGhD/Tu8=</dsig:DigestValue>
+        <dsig:DigestValue>yk6i+tR7Vv6obtpmO+cHzK+1aCQ=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

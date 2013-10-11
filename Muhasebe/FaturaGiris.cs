@@ -25,9 +25,9 @@ namespace Muhasebe
             InitializeComponent();
             fatura = _fatura;
             btSil.Enabled = true;
-            tbTarih.Text = fatura.tarih;
+            dtpTarih.Value = fatura.tarih;
             tbNo.Text = fatura.no;
-            tbTarih.Text = fatura.irsaliyeNo;
+            tbIrNo.Text = fatura.irsaliyeNo;
             tbTutar.Text = fatura.tutar.ToString();
         }
 
@@ -36,7 +36,7 @@ namespace Muhasebe
             if (Check())
             {
                 okay = true;
-                fatura = new Form1.Fatura(tbTarih.Text, tbNo.Text, tbIrNo.Text, double.Parse(tbTutar.Text));
+                fatura = new Form1.Fatura(dtpTarih.Value, tbNo.Text, tbIrNo.Text, double.Parse(tbTutar.Text));
                 this.Hide();
             }
             else MessageBox.Show("Lütfen yıldızlı alanları eksiksiz doldurun.", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -45,7 +45,7 @@ namespace Muhasebe
         private bool Check()
         {
             long number1 = 0;
-            if (long.TryParse(tbTutar.Text, out number1) && tbTarih.Text != "" && tbIrNo.Text != "") return true;
+            if (long.TryParse(tbTutar.Text, out number1) && tbIrNo.Text != "") return true;
             else return false;
         }
 

@@ -41,9 +41,26 @@ namespace Muhasebe
 
         private void btKaydet_Click(object sender, EventArgs e)
         {
+            if (!check()) return;
             created = true;
             output = new Form1.CKart(tbAd.Text, tbAdres.Text, tbTel.Text, tbMail.Text, tbNo.Text, tbNo2.Text, tbNo3.Text, double.Parse(tbBakiye.Text));
             this.Hide();
+        }
+
+        private bool check()
+        {
+            long number1 = 0;
+            if (!long.TryParse(tbBakiye.Text, out number1))
+            {
+                MessageBox.Show("Bakiye değeri sadece sayı olabilir.", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            else if (tbAd.Text == "")
+            {
+                MessageBox.Show("Lütfen firma adı girin.", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            return true;
         }
 
         private void btSil_Click(object sender, EventArgs e)

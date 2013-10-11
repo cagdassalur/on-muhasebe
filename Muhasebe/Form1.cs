@@ -13,22 +13,18 @@ using System.Windows.Forms;
 using System.Web.Script.Serialization;
 
 // TODO: 
-// ***** User objesi için ayar ekranı koy
-// ***** gider listesine tarih filtresi ve sütunu ekle
-// *** satış ekranında isim tb içinde çıkan listeyi tek tık yap
-// ** enter tuşunu formlara bağla http://stackoverflow.com/questions/14045825/change-accept-button-with-tabs
-// ** Kullanıcı sildir
-// ** kartview ekranına kaydet butonu
-// ** Cari Ekle type kontrolü
-// ** Cari Edit
-// * Cari sildir
+// ** bazı form tb kontrollerinde yıldız olacak onları koy
+// ** Kullanıcı sildir / user already exsists uyarısı
 // * yeni kart ekranına giderler açıklaması koy http://stackoverflow.com/questions/14544135/how-to-gray-out-default-text-in-textbox
-// * eksik form ikonlarını tamamla
-
-
+// 3.
 // ** Urun objesine birim ekle 
 // *** Ekran kaplanacak
-// 
+// ***** User objesi için ayar ekranı koy
+// 2.
+// *** satış ekranında isim tb içinde çıkan listeyi tek tık yap
+// 1.
+// ** MenuStrip koyulacak
+
 
 
 
@@ -36,37 +32,43 @@ using System.Web.Script.Serialization;
 namespace Muhasebe
 {
     public partial class Form1 : Form
-    {
-
-        double totalPara = 5000;
+    {      
         string version = System.Reflection.Assembly.GetEntryAssembly().GetName().Version.ToString();
         List<Urun> dBArray = new List<Urun>();
         List<Gider> GiderArray = new List<Gider>();
         List<CKart> KartArray = new List<CKart>();
+        List<Satis> TSatisArray = new List<Satis>();
         public List<Urun_s> SatisArray = new List<Urun_s>();
         DirectoryInfo dir;
         customComplete AutoCompleteObject;
         User user;
+
+        Double raporGelirTop;
+        Double raporGiderTop;
         
         public Form1()
         {
             this.StartPosition = FormStartPosition.CenterScreen;
             InitializeComponent();
-
+            
             dir = new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\muhasebe");
 
             user = oku(login(getKadi().ToArray()));
+            foreach (string gider in user.giderler) cbGider.Items.Add(gider);
+            cbGider.Items.Add("Diğer");
+            cbGider.SelectedIndex = 1;
 
             AutoCompleteObject = new customComplete(dBArray);
             updateLabelFiyat();
 
+            dtpInit();
             lvDbUpdate();
             lvGiderUpdate();
             lvSatisUpdate();
-            KartArray.Add(new CKart("TEST","","","","","","", 0));
             lvKartlarUpdate();
             updateLabelToplamFiyat();
             GiderKaydir(false);
+            this.AcceptButton = btSatisEkle;
         }
 
         private string login(String[] KAdiList)
@@ -96,14 +98,26 @@ namespace Muhasebe
             dBArray = savedata.Uruns;
             GiderArray = savedata.Giders;
             KartArray = savedata.CKarts;
+            TSatisArray = savedata.TSatislar;
+            labelSirket.Text = savedata.user.title;
+            stlabelIsım.Text = savedata.user.title;
             return savedata.user;
         }
 
         private void yaz()
         {
-            SaveData savedata = new SaveData(dBArray, GiderArray, KartArray, user);
+            SaveData savedata = new SaveData(dBArray, GiderArray, KartArray, TSatisArray, user);
             var json = new JavaScriptSerializer().Serialize(savedata);
             System.IO.File.WriteAllText(dir.FullName + "\\" + user.username + ".json" , json);
+        }
+
+        private void dtpInit() 
+        {
+            dtpGelB.Value = DateTime.Today.AddDays((-1 * DateTime.Today.Day)+1);
+            dtpGidB.Value = DateTime.Today.AddDays((-1 * DateTime.Today.Day)+1);
+            dtpGelS.Value = DateTime.Today;
+            dtpGidS.Value = DateTime.Today;
+            dtpGider.Value = DateTime.Today;
         }
 
         #region Database Tab
@@ -236,7 +250,6 @@ namespace Muhasebe
 
         private void lvGiderUpdate()
         {
-            totalPara = 5000;
             lvGider.SelectedIndices.Clear();
             lvGiderAddColumns();
             foreach (Gider gider in GiderArray)
@@ -244,9 +257,7 @@ namespace Muhasebe
                 String[] row = { gider.tur, gider.miktar.ToString(), "₤" + gider.fiyat.ToString("N2"), "₤" + gider.masraf.ToString("N2") };
                 var item = new ListViewItem(row);
                 lvGider.Items.Add(item);
-                totalPara -= gider.masraf;
             }
-            //slPara.Text = "Toplam Para: " + totalPara.ToString();
         }
 
         private void btGiderEkle_Click(object sender, EventArgs e)
@@ -254,20 +265,11 @@ namespace Muhasebe
             if (!GiderCheck()) return;
 
             string tur;
-            int index;
 
-            if (tbGiderDiger.Visible)
-            {
-                tur = tbGiderDiger.Text;
-                index = -2;
-            }
-            else 
-            {
-                tur = cbGider.SelectedItem.ToString();
-                index = cbGider.SelectedIndex;
-            }
+            if (tbGiderDiger.Visible) tur = tbGiderDiger.Text;
+            else tur = cbGider.SelectedItem.ToString();
 
-            GiderArray.Add(new Gider(tur, (int)nudGiderMiktar.Value, Convert.ToDouble(tbFiyat.Text), index));
+            GiderArray.Add(new Gider(tur, (int)nudGiderMiktar.Value, Convert.ToDouble(tbFiyat.Text), dtpGider.Value));
             lvGiderUpdate();
         }
 
@@ -280,12 +282,15 @@ namespace Muhasebe
 
                 Gider seciliGider = GiderArray[e.ItemIndex];
 
-                if (seciliGider.index == -2)
+                bool found = false;
+                foreach (String tur in user.giderler) found = seciliGider.tur == tur;
+
+                if (found)
                 {
                     cbGider.SelectedIndex = cbGider.Items.Count - 1;
                     tbGiderDiger.Text = seciliGider.tur;
                 }
-                else cbGider.SelectedIndex = seciliGider.index;
+                else cbGider.SelectedItem = seciliGider.tur;
 
                 tbFiyat.Text = seciliGider.fiyat.ToString();
                 nudGiderMiktar.Value = seciliGider.miktar;
@@ -312,20 +317,11 @@ namespace Muhasebe
             if (!GiderCheck()) return;
 
             string tur;
-            int index;
 
-            if (tbGiderDiger.Visible)
-            {
-                tur = tbGiderDiger.Text;
-                index = -2;
-            }
-            else
-            {
-                tur = cbGider.SelectedItem.ToString();
-                index = cbGider.SelectedIndex;
-            }
+            if (tbGiderDiger.Visible)tur = tbGiderDiger.Text;
+            else tur = cbGider.SelectedItem.ToString();
 
-            GiderArray[lvGider.SelectedIndices[0]] = new Gider(tur, (int)nudGiderMiktar.Value, Convert.ToDouble(tbFiyat.Text), index);
+            GiderArray[lvGider.SelectedIndices[0]] = new Gider(tur, (int)nudGiderMiktar.Value, Convert.ToDouble(tbFiyat.Text), dtpGider.Value);
             lvGiderUpdate();
         }
 
@@ -380,19 +376,19 @@ namespace Muhasebe
         public class Gider
         {
             public string tur;
+            public DateTime tarih;
             public int miktar;
             public double masraf;
             public double fiyat;
-            public int index;
 
             public Gider() { }
-            public Gider(string _tur, int _miktar, double _fiyat, int _index)
+            public Gider(string _tur, int _miktar, double _fiyat, DateTime _tarih)
             {
                 this.tur = _tur;
                 this.fiyat = _fiyat;
                 this.miktar = _miktar;
                 this.masraf = this.miktar * this.fiyat;
-                this.index = _index;
+                this.tarih = _tarih;
             }
         }
         #endregion
@@ -536,9 +532,9 @@ namespace Muhasebe
                 }
             }
 
+            TSatisArray.Add(new Satis(SatisArray));
             SatisArray.Clear();
             lvSatisUpdate();
-            totalPara += double.Parse(labelToplamFiyat.Text.Split(' ')[0].Replace(",", ""));
             updateLabelToplamFiyat();
             lvDbUpdate();
         }
@@ -630,6 +626,23 @@ namespace Muhasebe
             }
 
 
+        }
+
+        public class Satis 
+        {
+            public List<Urun_s> SatisArray;
+            public DateTime tarih;
+            public Double fiyat = 0;
+            public Satis() { }
+            public Satis(List<Urun_s> _SatisArray) 
+            {
+                SatisArray = _SatisArray;
+                tarih = DateTime.Today;
+                foreach (Urun_s urun in SatisArray)
+                {
+                    fiyat += urun.masraf;
+                }
+            }
         }
         #endregion
 
@@ -786,6 +799,99 @@ namespace Muhasebe
 
         #region Rapor Tab
 
+        private void lvRGelirAddColumns()
+        {
+            lvRGelir.Clear();
+            foreach (var header in new Dictionary<string, int> {
+                {"Tür",96},
+                {"Tarih",95},
+                {"Tutar",87}})
+            {
+                ColumnHeader tmp_header = new ColumnHeader();
+                tmp_header.Text = header.Key;
+                tmp_header.Width = header.Value;
+                lvRGelir.Columns.Add(tmp_header);
+            }
+        }
+
+        private void lvRGiderAddColumns()
+        {
+            lvRGider.Clear();
+            foreach (var header in new Dictionary<string, int> {
+                {"Tür",96},
+                {"Tarih",95},
+                {"Tutar",87}})
+            {
+                ColumnHeader tmp_header = new ColumnHeader();
+                tmp_header.Text = header.Key;
+                tmp_header.Width = header.Value;
+                lvRGider.Columns.Add(tmp_header);
+            }
+        }
+
+        private void lvRGelirUpdate()
+        {
+            raporGelirTop = 0;
+            lvRGelir.SelectedIndices.Clear();
+            lvRGelirAddColumns();
+            foreach (Satis gelir in TSatisArray)
+            {
+                if (gelir.tarih.CompareTo(dtpGelB.Value) < 0 || gelir.tarih.CompareTo(dtpGelS.Value) > 0) continue;
+                String[] row = { "Satış", gelir.tarih.ToShortDateString(), "₤" + gelir.fiyat.ToString("N") };
+                var item = new ListViewItem(row);
+                lvRGelir.Items.Add(item);
+                raporGelirTop += gelir.fiyat;
+            }
+            labelRapor.Text = (raporGelirTop - raporGiderTop).ToString("N") + " TL";
+        }
+
+        private void lvRGiderUpdate()
+        {
+            raporGiderTop = 0;
+            lvRGider.SelectedIndices.Clear();
+            lvRGiderAddColumns();
+            foreach (CKart kart in KartArray)
+            {
+                foreach (Odeme odeme in kart.odemeList)
+                {
+                    if (odeme.tarih.CompareTo(dtpGidB.Value) < 0 || odeme.tarih.CompareTo(dtpGidS.Value) > 0) continue;
+                    String[] row = { kart.name, odeme.tarih.ToShortDateString(), "₤" + odeme.tutar.ToString("N2") };
+                    var item = new ListViewItem(row);
+                    lvRGider.Items.Add(item);
+                    raporGiderTop += odeme.tutar;
+                }
+                labelRapor.Text = (raporGelirTop - raporGiderTop).ToString("N") + " TL";
+            }
+
+            foreach (Gider gider in GiderArray)
+            {
+                if (gider.tarih.CompareTo(dtpGidB.Value) < 0 || gider.tarih.CompareTo(dtpGidS.Value) > 0) continue;
+                String[] row = {gider.tur, gider.tarih.ToShortDateString(), "₤" + gider.masraf.ToString("N2")};
+                var item = new ListViewItem(row);
+                lvRGider.Items.Add(item);
+            }
+        }
+
+        private void dtpGelB_ValueChanged(object sender, EventArgs e)
+        {
+            lvRGelirUpdate();
+        }
+
+        private void dtpGelS_ValueChanged(object sender, EventArgs e)
+        {
+            lvRGelirUpdate();
+        }
+
+        private void dtpGidB_ValueChanged(object sender, EventArgs e)
+        {
+            lvRGiderUpdate();
+        }
+
+        private void dtpGidS_ValueChanged(object sender, EventArgs e)
+        {
+            lvRGiderUpdate();
+        }
+
         #endregion
 
         public class User
@@ -826,26 +932,78 @@ namespace Muhasebe
             public List<Urun> Uruns { get; set; }
             public List<Gider> Giders { get; set; }
             public List<CKart> CKarts { get; set; }
+            public List<Satis> TSatislar { get; set; }
             public User user { get; set; }
 
             public SaveData() { }
-            public SaveData(List<Urun> _Uruns, List<Gider> _Giders, List<CKart> _CKarts, User _user) 
+            public SaveData(List<Urun> _Uruns, List<Gider> _Giders, List<CKart> _CKarts, List<Satis> _TSatislar, User _user) 
             {
                 Uruns = _Uruns;
                 Giders = _Giders;
                 CKarts = _CKarts;
                 user = _user;
+                TSatislar = _TSatislar;
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
-            yaz();
-            MessageBox.Show("oldu");
+            switch (tabControl.SelectedIndex)
+            {
+                case 0:
+                    this.AcceptButton = btSatisEkle;
+                    break;
+                case 1:
+                    this.AcceptButton = btGiderEkle;
+                    break;
+                case 3:
+                    this.AcceptButton = btUrunEkle;
+                    break;
+                case 4:
+                    lvRGelirUpdate();
+                    lvRGiderUpdate();
+                    break;
+                default:
+                    break;
+            }
         }
 
+        private void tsmiKaydet_Click(object sender, EventArgs e)
+        {
+            yaz();
+            MessageBox.Show("Başarıyla kaydedildi","Kaydet",MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
+        }
 
+        private void satışToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            tabControl.SelectedIndex = 0;
+        }
 
+        private void giderlerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            tabControl.SelectedIndex = 1;
+        }
+
+        private void hesapToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            tabControl.SelectedIndex = 2;
+        }
+
+        private void stokGirişiToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            tabControl.SelectedIndex = 3;
+        }
+
+        private void raporToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            tabControl.SelectedIndex = 4;
+        }
+
+        private void hakkındaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AboutBox aboutbox = new AboutBox();
+            aboutbox.ShowDialog();
+        }
 
 
 
