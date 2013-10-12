@@ -18,6 +18,7 @@ namespace Muhasebe
         public OdemeGiris()
         {
             InitializeComponent();
+            dtpTarih.Value = DateTime.Today;
         }
 
         public OdemeGiris(Form1.Odeme _odeme)
@@ -44,8 +45,8 @@ namespace Muhasebe
 
         private bool Check()
         {
-            long number1 = 0;
-            if (long.TryParse(tbTutar.Text, out number1)) return true;
+            double number1 = 0;
+            if (double.TryParse(tbTutar.Text, out number1)) return true;
             else return false;
         }
 

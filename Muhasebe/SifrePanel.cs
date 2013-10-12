@@ -16,6 +16,7 @@ namespace Muhasebe
         List<string> sifre;
         DirectoryInfo dir;
         public string returnKadi;
+        public bool closed = false;
 
         public SifrePanel(String[] kAdiList, DirectoryInfo _dir)
         {
@@ -35,12 +36,12 @@ namespace Muhasebe
             else foreach (string kAdi1 in kAdi) cbKAdi.Items.Add(kAdi1);
             if(cbKAdi.Items.Count > 0) cbKAdi.SelectedIndex = 0;
 
-            tbSifre.Text = "1234"; // TEST!
+            //tbSifre.Text = "1234"; // TEST!
         }
 
         private void SifrePanel_FormClosing(object sender, FormClosingEventArgs e)
         {
-            e.Cancel = true;
+            if (e.CloseReason == CloseReason.UserClosing) closed = true;
         }
 
         private void tbSifre_TextChanged(object sender, EventArgs e)
@@ -61,7 +62,7 @@ namespace Muhasebe
                 if (kAdi[i] == cbKAdi.SelectedItem.ToString()) 
                 {
                     if (sifre[i] == tbSifre.Text) { returnKadi = kAdi[i]; this.Hide(); return; }
-                    else MessageBox.Show("Hatalı Şifre" + sifre[i], "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    else MessageBox.Show("Hatalı Şifre", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }

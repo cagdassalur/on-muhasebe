@@ -43,14 +43,24 @@ namespace Muhasebe
         {
             if (!check()) return;
             created = true;
-            output = new Form1.CKart(tbAd.Text, tbAdres.Text, tbTel.Text, tbMail.Text, tbNo.Text, tbNo2.Text, tbNo3.Text, double.Parse(tbBakiye.Text));
+            Form1.CKart outKart = new Form1.CKart(tbAd.Text, tbAdres.Text, tbTel.Text, tbMail.Text, tbNo.Text, tbNo2.Text, tbNo3.Text, double.Parse(tbBakiye.Text));
+            if (output != null)
+            {
+                outKart.odemeList = output.odemeList;
+                outKart.faturaList = output.faturaList;
+                outKart.faturaToplam = output.faturaToplam;
+                outKart.odemeToplam = output.odemeToplam;
+                outKart.cariToplam = output.cariToplam - double.Parse(tbBakiye.Text);
+            }
+
+            output = outKart;
             this.Hide();
         }
 
         private bool check()
         {
-            long number1 = 0;
-            if (!long.TryParse(tbBakiye.Text, out number1))
+            double number1 = 0;
+            if (!double.TryParse(tbBakiye.Text, out number1))
             {
                 MessageBox.Show("Bakiye değeri sadece sayı olabilir.", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;

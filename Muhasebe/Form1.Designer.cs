@@ -613,7 +613,7 @@
             this.tabHesap.Padding = new System.Windows.Forms.Padding(3);
             this.tabHesap.Size = new System.Drawing.Size(583, 456);
             this.tabHesap.TabIndex = 2;
-            this.tabHesap.Text = "Hesap";
+            this.tabHesap.Text = "Cari Kartlar";
             this.tabHesap.UseVisualStyleBackColor = true;
             // 
             // lvKartlar
@@ -1033,7 +1033,7 @@
             // tsmiKaydet
             // 
             this.tsmiKaydet.Name = "tsmiKaydet";
-            this.tsmiKaydet.Size = new System.Drawing.Size(152, 22);
+            this.tsmiKaydet.Size = new System.Drawing.Size(110, 22);
             this.tsmiKaydet.Text = "Kaydet";
             this.tsmiKaydet.Click += new System.EventHandler(this.tsmiKaydet_Click);
             // 
@@ -1095,7 +1095,7 @@
             // hakkındaToolStripMenuItem
             // 
             this.hakkındaToolStripMenuItem.Name = "hakkındaToolStripMenuItem";
-            this.hakkındaToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.hakkındaToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.hakkındaToolStripMenuItem.Text = "Hakkında";
             this.hakkındaToolStripMenuItem.Click += new System.EventHandler(this.hakkındaToolStripMenuItem_Click);
             // 
@@ -1110,6 +1110,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "Ön Muhasebe";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.tabControl.ResumeLayout(false);
             this.tabSatis.ResumeLayout(false);
             this.tabSatis.PerformLayout();

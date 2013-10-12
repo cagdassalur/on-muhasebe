@@ -44,8 +44,8 @@ namespace Muhasebe
 
         private bool Check()
         {
-            long number1 = 0;
-            if (long.TryParse(tbTutar.Text, out number1) && tbIrNo.Text != "") return true;
+            double number1 = 0;
+            if (double.TryParse(tbTutar.Text, out number1) && tbIrNo.Text != "") return true;
             else return false;
         }
 

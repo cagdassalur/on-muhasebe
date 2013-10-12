@@ -43,14 +43,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Muhasebe.exe" size="904192">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Muhasebe.exe" size="1037824">
       <assemblyIdentity name="Muhasebe" version="0.9.2.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>yk6i+tR7Vv6obtpmO+cHzK+1aCQ=</dsig:DigestValue>
+        <dsig:DigestValue>H58tuMxUUetKqA8z+YOaB5CqwaQ=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

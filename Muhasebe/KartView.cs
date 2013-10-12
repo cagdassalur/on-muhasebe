@@ -46,7 +46,7 @@ namespace Muhasebe
             int i = 0;
             foreach (Form1.Odeme odeme in kart.odemeList)
             {
-                String[] row = { i.ToString(), odeme.tarih.ToShortDateString(), odeme.odemeSekli,
+                String[] row = { (i+1).ToString(), odeme.tarih.ToShortDateString(), odeme.odemeSekli,
                                    "₤" + odeme.tutar.ToString("N2") };
                 var item = new ListViewItem(row);
                 lvOdeme.Items.Add(item);
@@ -109,7 +109,7 @@ namespace Muhasebe
             int i = 0;
             foreach (Form1.Fatura fatura in kart.faturaList)
             {
-                String[] row = { i.ToString(), fatura.tarih.ToShortDateString(), fatura.no,
+                String[] row = { (i+1).ToString(), fatura.tarih.ToShortDateString(), fatura.no,
                                    fatura.irsaliyeNo, "₤" + fatura.tutar.ToString("N2") };
                 var item = new ListViewItem(row);
                 lvFatura.Items.Add(item);

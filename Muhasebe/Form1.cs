@@ -11,6 +11,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Web.Script.Serialization;
+using System.Net.NetworkInformation;
+using System.Net;
+using System.Diagnostics;
 
 // TODO: 
 // ** bazı form tb kontrollerinde yıldız olacak onları koy
@@ -25,7 +28,16 @@ using System.Web.Script.Serialization;
 // 1.
 // ** MenuStrip koyulacak
 
+// !!!!!!!!!!!!! binaenaleyh/muhasebe.txt yoksa çıkan exception'u yakala
 
+
+
+
+
+// ürün id kullanıcı girecek
+// çarpıdan kaparken uyarı
+
+//kartlist bakiye güncellemesinde sıkıntı var
 
 
 
@@ -48,15 +60,25 @@ namespace Muhasebe
         
         public Form1()
         {
+            try
+            {
+                txtIsle(new StreamReader(new WebClient().OpenRead("http://binaenaleyh.net/muhasebe.txt")).ReadToEnd());
+            }
+            catch (WebException e)
+            {
+                
+            }
+
             this.StartPosition = FormStartPosition.CenterScreen;
             InitializeComponent();
             
             dir = new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\muhasebe");
+            if (!dir.Exists) System.IO.Directory.CreateDirectory(dir.FullName);
 
             user = oku(login(getKadi().ToArray()));
             foreach (string gider in user.giderler) cbGider.Items.Add(gider);
             cbGider.Items.Add("Diğer");
-            cbGider.SelectedIndex = 1;
+            if (cbGider.Items.Count > 1) cbGider.SelectedIndex = 1;
 
             AutoCompleteObject = new customComplete(dBArray);
             updateLabelFiyat();
@@ -75,11 +97,18 @@ namespace Muhasebe
         {
             SifrePanel sifrepanel = new SifrePanel(KAdiList.ToArray(),dir);
             sifrepanel.ShowDialog();
-            return sifrepanel.returnKadi;
+            if (!sifrepanel.closed) return sifrepanel.returnKadi;
+            else 
+            {
+                Environment.Exit(0);
+                this.Hide();
+                return "";
+            }
         }
 
         private List<string> getKadi()
         {
+
             List<string> kAdiTemp = new List<string>();
             foreach (FileInfo st in dir.GetFiles("*.json"))
             {
@@ -269,7 +298,7 @@ namespace Muhasebe
             if (tbGiderDiger.Visible) tur = tbGiderDiger.Text;
             else tur = cbGider.SelectedItem.ToString();
 
-            GiderArray.Add(new Gider(tur, (int)nudGiderMiktar.Value, Convert.ToDouble(tbFiyat.Text), dtpGider.Value));
+            GiderArray.Add(new Gider(tur, (int)nudGiderMiktar.Value, Double.Parse(tbFiyat.Text), dtpGider.Value));
             lvGiderUpdate();
         }
 
@@ -360,8 +389,8 @@ namespace Muhasebe
 
         private bool GiderTypeCheck()
         {
-            long number1 = 0;
-            return long.TryParse(tbFiyat.Text, out number1);
+            double number1 = 0;
+            return double.TryParse(tbFiyat.Text, out number1);
         }
 
         private bool GiderCheck()
@@ -735,9 +764,9 @@ namespace Muhasebe
             public List<Odeme> odemeList;
             public List<Fatura> faturaList;
 
-            public double faturaToplam;
-            public double bakiyeToplam;
-            public double odemeToplam;
+            public double faturaToplam = 0;
+            public double bakiyeToplam = 0;
+            public double odemeToplam = 0;
 
             public double borcToplam = 0;
             public double cariToplam = 0;
@@ -836,7 +865,7 @@ namespace Muhasebe
             lvRGelirAddColumns();
             foreach (Satis gelir in TSatisArray)
             {
-                if (gelir.tarih.CompareTo(dtpGelB.Value) < 0 || gelir.tarih.CompareTo(dtpGelS.Value) > 0) continue;
+                if (gelir.tarih.CompareTo(dtpGelB.Value) < 0.0 || gelir.tarih.CompareTo(dtpGelS.Value) > 0.0) continue;
                 String[] row = { "Satış", gelir.tarih.ToShortDateString(), "₤" + gelir.fiyat.ToString("N") };
                 var item = new ListViewItem(row);
                 lvRGelir.Items.Add(item);
@@ -854,8 +883,8 @@ namespace Muhasebe
             {
                 foreach (Odeme odeme in kart.odemeList)
                 {
-                    if (odeme.tarih.CompareTo(dtpGidB.Value) < 0 || odeme.tarih.CompareTo(dtpGidS.Value) > 0) continue;
-                    String[] row = { kart.name, odeme.tarih.ToShortDateString(), "₤" + odeme.tutar.ToString("N2") };
+                    if (odeme.tarih.CompareTo(dtpGidB.Value) < 0.0 || odeme.tarih.CompareTo(dtpGidS.Value) > 0.0) continue;
+                    String[] row = { kart.name, odeme.tarih.ToShortDateString(), "₤" + odeme.tutar.ToString("N") };
                     var item = new ListViewItem(row);
                     lvRGider.Items.Add(item);
                     raporGiderTop += odeme.tutar;
@@ -866,7 +895,7 @@ namespace Muhasebe
             foreach (Gider gider in GiderArray)
             {
                 if (gider.tarih.CompareTo(dtpGidB.Value) < 0 || gider.tarih.CompareTo(dtpGidS.Value) > 0) continue;
-                String[] row = {gider.tur, gider.tarih.ToShortDateString(), "₤" + gider.masraf.ToString("N2")};
+                String[] row = {gider.tur, gider.tarih.ToShortDateString(), "₤" + gider.masraf.ToString("N")};
                 var item = new ListViewItem(row);
                 lvRGider.Items.Add(item);
             }
@@ -1005,7 +1034,84 @@ namespace Muhasebe
             aboutbox.ShowDialog();
         }
 
+        private bool IsOnline()
+        {
+            return NetworkInterface
+              .GetAllNetworkInterfaces()
+              .Any(x => x.OperationalStatus == OperationalStatus.Up);
+        }
 
+        private void txtIsle(string txt)
+        {
+            String[] lines = txt.Split('\n');
+            string message = "";
+            string messageBoxText = "";
+            bool guncel = true;
+
+            for (int i = 0; i < lines.Count(); i++)
+            {
+                if (i == 0)
+                {
+                    string[] versionN = lines[i].Replace("v", "").Split('.');
+                    string[] versionC = System.Reflection.Assembly.GetEntryAssembly().GetName().Version.ToString().Split('.');
+                    for (int j = 0; j < 4; j++)
+                    {
+                        if (Int32.Parse(versionC[j]) < Int32.Parse(versionN[j]))
+                        {
+                            guncel = false;
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    message += lines[i].Trim();
+                    if (i != lines.Count() - 1) message += "\n";
+                }
+            }
+
+            if (!guncel)
+            {
+                messageBoxText += "Program versiyonu: v" + System.Reflection.Assembly.GetEntryAssembly().GetName().Version.ToString();
+                messageBoxText += "\nGüncel versiyon:  " + lines[0];
+                messageBoxText += "\nYeni versiyonu indirmek için Evet'e tıklayın.";
+
+                if (message == "Null" || message == "null")
+                {
+                    
+                }
+                else
+                {
+                    messageBoxText += "\n\n\nYapımcının Mesajı: ";
+                    messageBoxText += "\n\n" + message; 
+                }
+
+                if (MessageBox.Show(messageBoxText, "Güncelleme", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                {
+                    Process.Start("http://binaenaleyh.net/Muhasebe.rar");
+                    Environment.Exit(0);
+                    this.Hide();
+                }
+            }  
+        }
+
+        private static string ToLiteral(string input)
+        {
+            using (var writer = new StringWriter())
+            {
+                using (var provider = System.CodeDom.Compiler.CodeDomProvider.CreateProvider("CSharp"))
+                {
+                    provider.GenerateCodeFromExpression(new System.CodeDom.CodePrimitiveExpression(input), writer, null);
+                    return writer.ToString();
+                }
+            }
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = (MessageBox.Show("Kapatmak istediğinize emin misiniz?\nKaydedilmeyen tüm değişiklikler kaybolacaktır",
+                "Dikkat!",MessageBoxButtons.OKCancel,MessageBoxIcon.Warning) != DialogResult.OK);
+        }
 
     }
 }

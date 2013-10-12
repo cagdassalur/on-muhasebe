@@ -341,7 +341,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "KartView";
-            this.Text = "KartView";
+            this.Text = "Cari Kart";
             this.cmsFatura.ResumeLayout(false);
             this.cmsOdeme.ResumeLayout(false);
             this.ResumeLayout(false);
